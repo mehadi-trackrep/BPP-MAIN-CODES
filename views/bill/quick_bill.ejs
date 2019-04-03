@@ -1,0 +1,238 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <% include ../common/head.ejs %>
+</head>
+
+<body>
+    <!--== Navigation + Side Bar Start  ==-->
+    <header id="header">
+        <% include ../common/navBar.ejs %>
+    </header>
+
+    <% include ../common/sideBar.ejs %>
+
+    <!-- == Main body starts here == -->
+
+    <div id="content-wrapper">
+        <div class="mui--appbar-height"></div>
+        <div class="mui-container">
+            <br>
+            <div class="mui-panel" style="margin-top: 1%; margin-left:1% ">
+                <form method="POST" action="/bill/quick_bill" class="mui-form"
+                    style="margin-left: 10%; margin-top: 0%;">
+                    <h1 style="margin-left: 5%;"> Quick Bill</h1>
+
+
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-3">
+                            <input type="hidden" name="vehicle" placeholder="Company " id="company-name-field"
+                                value="Retail">
+                        </div>
+                    </div>
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-3">
+                            <input type="hidden" name="company" placeholder="Company " id="company-name-field"
+                                value="Pump">
+                        </div>
+                    </div>
+
+                    <ul class="mui-list--inline">
+                        <% fuels.forEach(function (fuel) { %>
+                        <li>
+                            <div class="mui-radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios"
+                                        value="<%= fuel.get('product').get('name')%>-<%= fuel.get('sellingPrice')%>">
+                                    <%= fuel.get('product').get('name') %> -
+                                    <%= fuel.get('sellingPrice')%>
+
+                                </label>
+
+                            </div>
+                        </li>
+                        <% }); %>
+                    </ul>
+
+                    <input type="hidden" name="stockId" id="stockId" value="hh">
+                    <input type="hidden" name="profit" id="profit" value="hh">
+
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-4">
+                            <input type="number" step="0.01" id="selling-quantity" name="quantity" required
+                                placeholder="Quantity" min="0.01">
+                        </div>
+                        <div class="mui-col-md-2">
+                            <p style="margin-top: 20px;">Ltr</p>
+                        </div>
+                    </div>
+                    <p id="invalid-message" style="color: red;"></p>
+
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-3">
+                            <input type="text" name="stock" placeholder="Stock -- Ltr" id="in-stock" readonly>
+                        </div>
+                        <div class="mui-textfield mui-col-md-3">
+                            <input type="text" name="after_stock" placeholder="Stock after sale -- Ltr"
+                                id="after-quantity" readonly>
+                        </div>
+                    </div>
+
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-3">
+                            <input type="text" name="price" placeholder="Price -- per Ltr" id="price_per_litre"
+                                readonly>
+                        </div>
+                        <div class="mui-textfield mui-col-md-3">
+                            <input type="text" name="discount" placeholder="Discount -- % or per Ltr"
+                                id="company_discount_span" readonly>
+                        </div>
+                    </div>
+
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-4">
+                            <input type="text" name="totalPrice" placeholder="Total price -- " id="total_price"
+                                readonly>
+                        </div>
+                    </div>
+
+
+
+                    <ul class="mui-list--inline">
+                        <li>
+                            <button type="submit" class="mui-btn mui-btn--raised" id="confirm">Confirm</button>
+                        </li>
+                        <li>
+                            <button type="submit" class="mui-btn mui-btn--raised" id="print" disabled>Print</button>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <% include ../common/footer.ejs %>
+    <script>
+        var vehicle, company, radio_product, radio_sp, stock, after_stock;
+        var stocks = JSON.parse('<%-JSON.stringify(fuels)%>')
+        var ts, sp, bp, discount = 0, ips = 0;
+        var fuelId, sellingQuantity = 0, globalTotal = 0;
+        $('#vehicle-select').on('change', function (val) {
+            var selected = $(this).children("option:selected").val();
+            vehicle = selected;
+            console.log(selected);
+            var myLink = '/ajax/get-company?id=' + selected
+            $("#company-name-field").val('...loading...');
+            $.ajax({
+                url: myLink,
+                success: function (result) {
+                    company = result.companyName.name;
+                    var a1, v1;
+                    a1 = result.companyName.discount;
+                    v1 = parseFloat(a1);
+                    if (v1 < 1.0) {
+                        $('#company_discount_span').val("Discount " + v1 * 100.0 + " %");
+                    } else {
+                        $('#company_discount_span').val("Discount " + v1 + " TK per Ltr");
+                    }
+                    $("#company-name-field").val(result.companyName.name);
+                    discount = parseFloat(result.companyName.discount);
+                },
+                error: function (err) {
+                    alert("API or Network fail");
+                }
+            });
+        })
+
+        $('input[type=radio][name=optionsRadios]').change(function () {
+            //alert("==> this.value: " + this.value)
+            var str = this.value;
+            var arr = str.split("-");
+            //alert("==> " + arr[0] + " == " + arr[1]);
+            radio_product = arr[0];
+            radio_sp = arr[1];
+            var i;
+            for (i = 0; i < stocks.length; i++) {
+                if (stocks[i].product.name == arr[0] && stocks[i].sellingPrice == arr[1]) {
+                    var perLiter = arr[1];
+                    var v1, a1;
+                    a1 = stocks[i].quantity;
+                    v1 = parseFloat(a1);
+
+                    //alert(v1)
+                    ts = stocks[i].quantity;
+                    stock = ts;
+                    sp = parseFloat(arr[1]);
+                    bp = parseFloat(stocks[i].buyingPrice);
+                    $('#stockId').val(stocks[i].objectId);
+                    if (discount < 1.0 && discount > 0) {
+                        total_price = ips * sp - ips * sp * discount;
+                        globalTotal = total_price;
+                    } else if (discount >= 1) {
+                        total_price = ips * (sp - discount);
+                        globalTotal = total_price;
+                    } else {
+                        total_price = ips * sp;
+                        globalTotal = total_price;
+                    }
+                    $('#price_per_litre').val("Price " + perLiter + " per Ltr");
+                    $('#in-stock').val("Stock " + v1 + " Ltr");
+                    $('#after-quantity').val("Stock after sale " + (v1 - sellingQuantity) + " Ltr");
+                    $('#total_price').val("Total price " + (globalTotal));
+                    if (ips > ts) {
+                        $('#invalid-message').html("Invalid quantitiy!");
+                        $("#selling-quantity").attr({ "max": ts });
+                    } else {
+                        $('#invalid-message').html("");
+                        $("#selling-quantity").attr({ "max": ts });
+                    }
+                    break;
+                }
+            }
+        });
+
+        $(document).ready(function () {
+            //function to calculate total
+            calculateTotal = function () {
+                ips = (parseFloat($('#selling-quantity').val()) || 0.0);
+                sellingQuantity = ips;
+                var total_price;
+                if (ips > ts) {
+                    $('#invalid-message').html("Invalid quantitiy!!");
+                    $("#selling-quantity").attr({ "max": ts });
+                } else {
+                    if (discount < 1.0 && discount > 0) {
+                        total_price = ips * sp - ips * sp * discount;
+                        globalTotal = total_price;
+                    } else if (discount >= 1) {
+                        total_price = ips * (sp - discount);
+                        globalTotal = total_price;
+                    } else {
+                        total_price = ips * sp;
+                        globalTotal = total_price;
+                    }
+
+                    var a1, v1;
+                    a1 = total_price;
+                    v1 = a1.toString();
+                    $('#total_price').val("Total price " + (globalTotal));
+                    a1 = ts - ips;
+                    v1 = a1.toString();
+                    $('#after-quantity').val("Stock after sale " + v1 + " Ltr");
+                    $("#profit").val(total_price - bp * ips);
+                    after_stock = ts - ips;
+                }
+            };
+            $('#selling-quantity').keyup(function () {
+                $('#invalid-message').html("");
+                calculateTotal();
+            });
+        });
+
+    </script>
+</body>
+
+</html>

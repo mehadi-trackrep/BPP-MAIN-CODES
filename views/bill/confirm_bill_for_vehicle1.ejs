@@ -1,0 +1,125 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <% include ../common/head.ejs %>
+</head>
+
+<body>
+    <!--== Navigation + Side Bar Start  ==-->
+    <header id="header">
+        <% include ../common/navBar.ejs %>
+    </header>
+
+
+
+    <% include ../common/sideBar.ejs %>
+
+
+    <!-- == Main body starts here == -->
+
+    <div id="content-wrapper">
+        <div class="mui--appbar-height"></div>
+        <div class="mui-container">
+            <br>
+            <div class="mui-panel" style="margin-top: 1%; margin-left:1% ">
+                <form method="POST" action="/bill/bill_for_vehicle" class="mui-form"
+                    style="margin-left: 10%; margin-top: 0%;">
+                    <h1 style="margin-left: 5%;">Bill for vehicle</h1>
+
+                    <div class="mui-row">
+                        <div class="mui-select mui-col-md-4">
+                            <select name="vehicle" id="vehicle-select">
+                                <option> <%=  result['vehicle']  %> </option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="mui-row">
+                        <div class="mui-select mui-col-md-4">
+                            <p>Company:</p>
+                            <strong>
+                                <p id="company-name-field"><%=  result['company']  %></p>
+                            </strong>
+                        </div>
+                    </div>
+
+                    <ul class="mui-list--inline">
+                        <li>
+                            <div class="mui-radio">
+                                <label>
+                                    <input type="radio" name="optionsRadios"
+                                        value="<%= result['radio-product'] %>-<%= result['radio-sp'] %>">
+                                    <%= result['radio_product'] %>-<%= result['radio_sp'] %>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+
+
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-4">
+                            <input type="text" id="bread" name="quantity" required placeholder="Quantity">
+                        </div>
+                        <div class="mui-col-md-2">
+                            <p style="margin-top: 20px;">Ltr</p>
+                        </div>
+                    </div>
+                    <p id="invalid-message" style="color: red;"></p>
+                    <ul class="mui-list--inline">
+                        <li>
+                            <h5>* Stock <strong><span id="in-stock"> <%= result['stock'] %> </span></strong> Ltr,
+                            </h5>
+                        </li>
+                        <li>
+                            <h5>* Stock after sale <strong><span
+                                        id="after-quantity"><%= result['after_stock'] %></span></strong> Ltr</h5>
+                        </li>
+                    </ul>
+
+                    <h4>* Price <strong><span id="price_per_litre"><%= result['price'] %></span></strong> Per Ltr
+                    </h4>
+                    <h4>* Discount <strong><span id="company_discount_span"><%= result['discount'] %></span>%</strong>
+                        or per
+                        Ltr</h4>
+                    <h3>* Total price <strong><span id="total_price">[[]]</span></strong></h3>
+
+                    <ul class="mui-list--inline">
+                        <li>
+                            <button type="submit" class="mui-btn mui-btn--raised" disabled>Confirm</button>
+                        </li>
+                        <li>
+                            <button type="submit" class="mui-btn mui-btn--raised">Print</button>
+                        </li>
+                    </ul>
+
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <% include ../common/footer.ejs %>
+    <script>
+
+        $(document).ready(function () {
+            //function to calculate total
+            calculateTotal = function () {
+                var total = (parseFloat($('#bread').val()) || 0.0);
+                //alert(total);
+                var p = "<%= price %>";
+                var d = "<%= discount %>";
+                var t = total * p;
+                total = t - t * (d / 100);
+                $('#total_price').text(total);
+            };
+            $('#bread').keyup(function () {
+                calculateTotal();
+            });
+        });
+
+    </script>
+</body>
+
+</html>

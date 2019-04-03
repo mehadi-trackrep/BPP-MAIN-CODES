@@ -1,0 +1,196 @@
+<!doctype html>
+<html>
+  <head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.muicss.com/mui-latest/css/mui.min.css" rel="stylesheet" type="text/css">
+  <link href="static/style.css" rel="stylesheet" type="text/css">
+  <script src="https://cdn.muicss.com/mui-latest/js/mui.min.js"></script>
+  <script src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script src="static/script.js"></script>
+
+</head>
+  <body>
+    <div id="sidedrawer" class="mui--no-user-select">
+      <div id="sidedrawer-brand" class="mui--appbar-line-height">
+        <span class="mui--text-title">BPP App</span>
+      </div>
+      <div class="mui-divider"></div>
+      <ul>
+        <li>
+          <strong>Billing</strong>
+          <ul>
+            <li><a href="#">Quick bill</a></li>
+            <li><a href="#">Bill for vehicle</a></li>
+            <li><a href="#">Find bills</a></li>
+          </ul>
+        </li>
+        <li>
+          <strong>Stock</strong>
+          <ul>
+            <li><a href="#">View stock</a></li>
+            <li><a href="#">Add stock</a></li>
+          </ul>
+        </li>
+        <li>
+          <strong>Product</strong>
+          <ul>
+            <li><a href="#">View product</a></li>
+            <li><a href="#">Add product</a></li>
+          </ul>
+        </li>
+        <li>
+            <strong>Vehicle</strong>
+            <ul>
+              <li><a href="#">View vehicle</a></li>
+              <li><a href="#">Add vehicle</a></li>
+            </ul>
+          </li>
+          <li>
+              <strong>Customer</strong>
+              <ul>
+                <li><a href="#">View customer</a></li>
+                <li><a href="#">Add customer</a></li>
+              </ul>
+            </li>
+      </ul>
+    </div>
+
+    <header id="header">
+      <div class="mui-appbar mui--appbar-line-height" style="background-color: black;">
+        <div class="mui-container-fluid">
+          <a class="sidedrawer-toggle mui--visible-xs-inline-block mui--visible-sm-inline-block js-show-sidedrawer">☰</a>
+          <a class="sidedrawer-toggle mui--hidden-xs mui--hidden-sm js-hide-sidedrawer">☰</a>
+          <button class="mui-btn" style="margin-left: 60%;">Home</button>
+          <div class="mui-dropdown">
+              <button class="mui-btn mui-btn--primary" data-mui-toggle="dropdown">
+                Report
+                <span class="mui-caret"></span>
+              </button>
+              <ul class="mui-dropdown__menu mui-dropdown__menu--right">
+                <li><a href="#">Inventory</a></li>
+                <li><a href="#">Sale</a></li>
+              </ul>
+            </div>
+            <button class="mui-btn">Logout</button>
+          <span class="mui--text-title mui--visible-xs-inline-block mui--visible-sm-inline-block">Brand.io</span>
+        </div>
+      </div>
+    </header>
+
+    <div id="content-wrapper">
+      <div class="mui--appbar-height"></div>
+      <div class="mui-container-fluid">
+        <br>
+        
+        <form class="mui-form" style="margin-left: 10%; margin-top: 4%;">
+            <h1 style="margin-left: 5%;">Bill for vehicle</h1>
+              <div class="mui-row">
+                <div class="mui-select mui-col-md-4">
+                  <select>
+                    <option>Option 1</option>
+                    <option>Option 2</option>
+                    <option>Option 3</option>
+                    <option>Option 4</option>
+                  </select>
+                  <label>Select company</label>
+                </div>
+              </div>
+              <div class="mui-row">
+                <div class="mui-select mui-col-md-4">
+                    <select>
+                        <option>Option 1</option>
+                        <option>Option 2</option>
+                        <option>Option 3</option>
+                        <option>Option 4</option>
+                      </select>
+                  <label>Select vehicle</label>
+                </div>
+            </div>
+
+          <ul class="mui-list--inline">
+            <li>
+            <div class="mui-radio">
+                <label>
+                  <input type="radio"
+                         name="optionsRadios"
+                         id="optionsRadios1"
+                         value="Disel"
+                         checked>
+                  Disel
+                </label>
+              </div>
+              </li>
+              <li>
+              <div class="mui-radio">
+                <label>
+                  <input type="radio"
+                         name="optionsRadios"
+                         id="optionsRadios2"
+                         value="Petrol">
+                  Petrol
+                </label>
+              </div>
+              </li>
+              <li>
+              <div class="mui-radio">
+                <label>
+                  <input type="radio"
+                         name="optionsRadios"
+                         id="optionsRadios3"
+                         value="Octane">
+                  Octane
+                </label>
+              </div>
+              </li>
+            </ul>
+
+            <div class="mui-row">
+                <div class="mui-textfield mui-col-md-4">
+                    <input type="text" name="" required placeholder="Quantity">
+                </div>
+              <div class="mui-col-md-2">
+                <p style="margin-top: 20px;">Ltr</p>
+              </div>
+            </div>
+
+            <ul class="mui-list--inline">
+              <li>
+                  <h5>* Stock [[]] Ltr, </h5>
+              </li>
+              <li>
+                  <h5>* Stock after sale [[]] Ltr</h5>
+              </li>
+            </ul>
+            
+            
+
+            <h4>* Price [[]] Per Ltr</h4>
+            <h4>* Discount [[]] % or per Ltr</h4>
+            <h3>* Total price [[]]</h3>
+            
+            <ul class="mui-list--inline">
+              <li>
+                  <button type="submit" class="mui-btn mui-btn--raised">Confirm</button>
+              </li>
+              <li>
+                  <button type="submit" class="mui-btn mui-btn--raised">Print</button>
+              </li>
+            </ul>
+            
+
+          </form>
+
+
+      </div>
+    </div>
+
+    <footer id="footer" style="background-color: black;">
+      <div class="mui-container-fluid">
+        <br>
+       <center> Made with ♥ by <a href="#">Bridge Tech</a> </center>
+      </div>
+    </footer>
+  </body>
+</html>

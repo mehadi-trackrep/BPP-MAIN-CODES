@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<% include ../common/head.ejs %>
+
+<body>
+  <% include ../common/sideBar.ejs %>
+  <header id="header">
+    <% include ../common/navBar.ejs %>
+  </header>
+
+  <div id="content-wrapper " style="overflow: hidden">
+    <div class="mui--appbar-height"></div>
+    <div class="mui-container">
+      <div class="top-panel">
+        <h2>Search Customers</h2>
+        <div class="mui-textfield mui-textfield--float-label">
+          <input id="myInput" type="text">
+          <label>Search..</label>
+        </div>
+        <br>
+
+        <div class="panel">
+          <div style="height = 500px">
+            <table id="customers" class="table-bordered table-sm table table-striped" cellspacing="0" width="100%">
+              <thead>
+                <tr>
+                  <th>Comapny Name</th>
+                  <th class="wider">Address</th>
+                  <th>Email</th>
+                  <th>Contact Person</th>
+                  <th>Contact</th>
+                </tr>
+              </thead>
+              <tbody id="myTable">
+                <% products.forEach(function (product) { %>
+                <tr>
+                  <td><%= product.get('name') %></td>
+                  <td class="wider"><%= product.get('address') %></td>
+                  <td><%= product.get('email') %></td>
+                  <td><%= product.get('contact_person') %></td>
+                  <td><%= product.get('contact_no') %></td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <% include ../common/footer.ejs %>
+  <script>
+    $(document).ready(function () {
+      $("#myInput").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function () {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    $(document).ready(function () {
+      $('#customers').DataTable({
+        "scrollY": "50vh",
+        "scrollCollapse": true,
+      });
+      $('.dataTables_length').addClass('bs-select');
+    });
+  </script>
+</body>
+
+</html>

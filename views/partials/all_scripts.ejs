@@ -1,0 +1,58 @@
+<script>
+  $(document).ready(function () {
+    $("#myInput").on("keyup", function () {
+      var value = $(this).val().toLowerCase();
+      $("#myTable tr").filter(function () {
+        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+      });
+    });
+
+    alert("Hello...");
+
+    $('#send_profile').click(function () {
+      e.preventDefault();
+      $.ajax({
+        global: false,
+        type: 'POST',
+        url: '/user/change',
+        dataType: 'html',
+        data: {
+          vehicle: $("#vehicle").val(),
+          company: $("#company").val(),
+          product: $("#product").val(),
+          quantity: $("#quantity").val(),
+          price: $("#price").val(),
+          discount: $("#discount").val(),
+          total_price: $("#total_price").val()
+        },
+        success: function (result) {
+          $('$send_profile').attr('disabled', true);
+          console.log("==> Result after AJAX call: " + result);
+        },
+        error: function (request, status, error) {
+          serviceError();
+        }
+      });
+    });
+
+  });
+
+
+
+</script>
+
+<script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="/js/jquery-3.2.1.min.js"></script>
+<script src="/js/popper.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+
+<!-- Rev slider js -->
+<script src="/vendors/revolution/js/jquery.themepunch.tools.min.js"></script>
+<script src="/vendors/revolution/js/jquery.themepunch.revolution.min.js"></script>
+<script src="/vendors/owl-carousel/owl.carousel.min.js"></script>
+
+<script src="/js/theme.js"></script>

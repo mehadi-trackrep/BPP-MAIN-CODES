@@ -1,0 +1,85 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+  <% include ../partials/head.ejs %>
+</head>
+
+<body>
+
+  <div class="container-fluid">
+
+    <!--== Navigation Bar Start  ==-->
+    <% include ../partials/navbar.ejs %>
+
+    <!-- == Main body starts here == -->
+    <% include ../partials/sidebar.ejs %>
+
+    <div class="container mt-3" style="margin-left: 260px; width: 80%;">
+      <h2>Bills</h2>
+      <input class="form-control" id="myInput" type="text" placeholder="Search..">
+      <br>
+      <table class="table table-bordered">
+        <thead>
+          <tr>
+            <th>Company name</th>
+            <th>Vehicle</th>
+            <th>Fuel</th>
+            <th>Quantity</th>
+            <th>Price</th>
+          </tr>
+        </thead>
+        <tbody id="myTable">
+          <tr>
+            <td>John</td>
+            <td>Doe</td>
+            <td>john@example.com</td>
+            <td>john@example.com</td>
+            <td>john@example.com</td>
+          </tr>
+          <tr>
+            <td>Mary</td>
+            <td>Moe</td>
+            <td>mary@mail.com</td>
+            <td>Moe</td>
+            <td>Moe</td>
+          </tr>
+          <tr>
+            <td>July</td>
+            <td>Dooley</td>
+            <td>july@greatstuff.com</td>
+            <td>Dooley</td>
+            <td>Dooley</td>
+          </tr>
+          <tr>
+            <td>Anja</td>
+            <td>Ravendale</td>
+            <td>a_r@test.com</td>
+            <td>a_r@test.com</td>
+            <td>a_r@test.com</td>
+          </tr>
+        </tbody>
+      </table>
+
+    </div>
+
+
+  </div>
+  <!-- ## All Script files ## -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#myInput").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+        $("#myTable tr").filter(function () {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<% include ../common/head.ejs %>
+
+<body>
+  <div class="mui-container" style="height: 96%">
+    <% include ../common/message.ejs %>
+    <div class="mui-panel" style="margin-top: 7%; ">
+      <form class="mui-form" method="POST" action="/account/login">
+        <legend>Username</legend>
+        <div class="mui-textfield">
+          <input type="text" name="username" required placeholder="Username" />
+        </div>
+        <legend>Password</legend>
+        <div class="mui-textfield">
+          <input type="password" name="password" required placeholder="Password" />
+        </div>
+        <button class="mui-btn mui-btn--primary mui-btn--raised" type="submit">
+          Login
+        </button>
+      </form>
+    </div>
+    <p>Don't have and account?</p>
+    <button class="mui-btn mui-btn--raised" id="register">
+      Register
+    </button>
+  </div>
+</body>
+<footer id="footerAccount">
+  <div>
+    <center>Made with ❤️️ by <a href="#">Bridge Tech</a></center>
+  </div>
+</footer>
+<script type="text/javascript">
+  document.getElementById("register").onclick = function () {
+    location.href = "/account/register";
+  };
+</script>
+
+</html>

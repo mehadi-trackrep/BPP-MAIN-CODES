@@ -1,0 +1,103 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <% include ../common/head.ejs %>
+</head>
+
+<body>
+    <!--== Navigation + Side Bar Start  ==-->
+    <header id="header">
+        <% include ../common/navBar.ejs %>
+    </header>
+
+    <% include ../common/sideBar.ejs %>
+
+
+    <!-- == Main body starts here == -->
+
+    <div id="content-wrapper">
+        <div class="mui--appbar-height"></div>
+        <div class="mui-container">
+            <br>
+            <div class="mui-panel" style="margin-top: 1%; margin-left:1% ">
+                <form method="POST" action="/bill/print_bill_for_vehicle" class="mui-form"
+                    style="margin-left: 10%; margin-top: 0%;">
+                    <h1 style="margin-left: 5%;">Print Bill for vehicle</h1>
+
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-4">
+                            <input type="text" name="vehicle" value="Vehicle: <%= result['vehicle'] %>" readonly>
+                        </div>
+                    </div>
+
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-4">
+                            <input type="text" name="company" value="Company: <%= result['company'] %>" readonly>
+                        </div>
+                    </div>
+
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-4">
+                            <input type="text" name="optionsRadios" value="Product: <%= result['product'] %>" readonly>
+                        </div>
+                    </div>
+
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-4">
+                            <input type="text" id="selling-quantity" name="quantity"
+                                value="Quantity: <%= result['quantity'] %> Ltr" readonly>
+                        </div>
+                    </div>
+
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-3">
+                            <input type="text" name="stock" value="Stock: <%= result['inStock'] %> Ltr" id="in-stock"
+                                readonly>
+                        </div>
+                        <div class="mui-textfield mui-col-md-3">
+                            <input type="text" name="after_stock"
+                                value="Stock after sale: <%= result['afterSaleStcok'] %> Ltr" id="after-quantity"
+                                readonly>
+                        </div>
+                    </div>
+
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-3">
+                            <input type="text" name="price"
+                                value="Selling price: <%= result['sellingPrice'] %> TK per Ltr" id="price_per_litre"
+                                readonly>
+                        </div>
+                        <div class="mui-textfield mui-col-md-3">
+                            <input type="text" name="discount" value="Discount: <%= result['discount'] %> per Ltr"
+                                id="company_discount_span" readonly>
+                        </div>
+                    </div>
+
+                    <div class=" mui-row">
+                        <div class="mui-textfield mui-col-md-4">
+                            <input type="text" name="totalPrice" value="Total price: <%= result['totalPrice'] %> TK"
+                                id="total_price" readonly>
+                        </div>
+                    </div>
+
+                    <ul class="mui-list--inline">
+                        <li>
+                            <button type="submit" class="mui-btn mui-btn--raised" id="confirm" disabled>Confirm</button>
+                        </li>
+                        <li>
+                            <button type="submit" class="mui-btn mui-btn--raised" id="print">Print</button>
+                        </li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <% include ../common/footer.ejs %>
+
+</body>
+
+</html>
