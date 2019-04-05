@@ -12,7 +12,7 @@
   <div id="content-wrapper " style="overflow: hidden">
     <div class="mui--appbar-height"></div>
     <div class="mui-container">
-      <div class="top-panel">
+      <div class="top-panel1" style="margin-left: 10%;">
         <h2>Search Customers</h2>
         <div class="mui-textfield mui-textfield--float-label">
           <input id="myInput" type="text">
@@ -20,8 +20,8 @@
         </div>
         <br>
 
-        <div class="panel">
-          <div style="height = 500px">
+        <div class="panel1">
+          <div>
             <table id="customers" class="table-bordered table-sm table table-striped" cellspacing="0" width="100%">
               <thead>
                 <tr>
@@ -32,7 +32,7 @@
                   <th>Contact</th>
                 </tr>
               </thead>
-              <tbody id="myTable">
+              <tbody id="myTable" style="height: 350px; overflow-y: auto;">
                 <% products.forEach(function (product) { %>
                 <tr>
                   <td><%= product.get('name') %></td>
@@ -46,28 +46,46 @@
             </table>
           </div>
         </div>
+        <footer style="margin-top: 20px;">
+          <% if (pages > 0) { %>
+          <div class="footer">
+            <ul class="pagination text-center">
+
+              <% if (pageStart == 0) { %>
+              <li class="disabled"><a>First</a></li>
+              <% } else { %>
+              <li><a href="/customer/view_customers?page=0">First</a></li>
+              <% } %>
+
+
+              <% if(pageStart == 0){ pageStart = pageStart+1; } %>
+
+              <% for(var i=pageStart; i!=lastPage; i++) {%>
+              <% if(i == pageStart){ %>
+              <li class="active"><a href="/customer/view_customers?page=<%= i %>"> <%= i %> </a></li>
+              <% }else{ %>
+              <li><a href="/customer/view_customers?page=<%= i %>"> <%= i %> </a></li>
+              <% }} %>
+
+              <% if (pageStart == pages) { %>
+              <li class="disabled"><a>Last</a></li>
+              <% } else { %>
+              <li><a href="/customer/view_customers?page=<%= pages %>">Last</a></li>
+              <% } %>
+
+            </ul>
+          </div>
+          <% } %>
+        </footer>
       </div>
     </div>
+
   </div>
 
+
+
   <% include ../common/footer.ejs %>
-  <script>
-    $(document).ready(function () {
-      $("#myInput").on("keyup", function () {
-        var value = $(this).val().toLowerCase();
-        $("#myTable tr").filter(function () {
-          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-        });
-      });
-    });
-    $(document).ready(function () {
-      $('#customers').DataTable({
-        "scrollY": "50vh",
-        "scrollCollapse": true,
-      });
-      $('.dataTables_length').addClass('bs-select');
-    });
-  </script>
+
 </body>
 
 </html>

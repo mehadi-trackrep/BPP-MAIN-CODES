@@ -17,6 +17,22 @@ router.get('/add_vehicle', function (req, res) {
     })
 })
 
+router.get('/modifyVehicle', function (req, res) {
+  const Product = Parse.Object.extend('Customer')
+  const query = new Parse.Query(Product)
+  // query.skip(600)
+  query
+    .find()
+    .then(result => {
+      console.log(result)
+      res.render('vehicle/modifyVehicle', { customers: result })
+    })
+    .catch(err => {
+      res.render('vehicle/modifyVehicle', { error: err })
+    })
+})
+
+
 router.get('/view_vehicle', async function (req, res) {
   const Vehicle = Parse.Object.extend('Vehicle')
   const Customer = Parse.Object.extend('Customer')
@@ -86,6 +102,51 @@ router.post('/insertInDb', function (req, res, next) {
     .catch(err => {
       console.log(err)
     })
+})
+
+
+
+router.post('/updateVehicle', async function (req, res, next) {
+  const companyId = req.body.companyId;
+  const vehicleId = req.body.vehicleId;
+  const color = req.body.color;
+  const driver = req.body.driver
+  const driver_no = req.body.driver_no
+  var driverNoFlat = driver_no.replace(/[^a-zA-Z0-9]/g, '')
+  driverNoFlat = driverNoFlat.toString().toLowerCase()
+  const Customer = Parse.Object.extend('Customer')
+  const Vehicle = Parse.Object.extend('Vehicle')
+  const query1 = new Parse.Query(Customer)
+
+  var customer = await query1.equalTo('objectId', companyId).first()
+  console.log(customer.get('name'))
+
+  console.log(companyId)
+  console.log(vehicleId)
+
+  const query = new Parse.Query(Vehicle)
+
+  query
+    .get(vehicleId)
+    .then(result => {
+      result.set('driver', driver)
+      result.set('driver_no', driver_no)
+      result.set('driverNoFlat', driverNoFlat)
+      result
+        .save()
+        .then(result => {
+          res.redirect("/vehicle/view_vehicle");
+
+        })
+        .catch(err => {
+          console.log(err)
+        })
+
+    })
+    .catch(err => {
+      console.log(err)
+    })
+
 })
 
 module.exports = router

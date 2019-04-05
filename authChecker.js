@@ -1,5 +1,5 @@
 var Parse = require('parse/node')
-authChecker = function authChecker (req, res, next) {
+authChecker = function authChecker(req, res, next) {
   console.log('checking auth')
   Parse.User.enableUnsafeCurrentUser()
   // let currentUser = Parse.User.current()
@@ -13,12 +13,22 @@ authChecker = function authChecker (req, res, next) {
 
   Parse.User.currentAsync().then(function (user) {
     // do stuff with your user
+
     if (user) {
+      var User = Parse.Object.extend('User')
+      const query = new Parse.Query(User)
 
-      console.log('user found ' + user)
+      console.log('user found ' + user.get('location'))
 
-      console.log('user found ' + user.email)
-
+      console.log('user found ' + user.id)
+      query
+        .get(user.id)
+        .then(user => {
+          console.log(user.get('username'))
+        })
+        .catch(err => {
+          console.log(err)
+        })
       next()
     } else {
       res.redirect('/account/login')

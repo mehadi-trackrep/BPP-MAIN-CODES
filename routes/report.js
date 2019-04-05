@@ -6,6 +6,7 @@ router.get('/currentSummery', function (req, res) {
   const Stock = Parse.Object.extend("Stock");
   const query = new Parse.Query(Stock);
   query.include("product");
+  query.greaterThan('quantity', 0);
   query
     .find()
     .then(result => {

@@ -48,7 +48,7 @@ app.use(function (req, res, next) {
 var accountRouter = require('./routes/account')
 app.use('/account', accountRouter)
 // auth before route
-app.use(authChecker) // ######################################
+// app.use(authChecker) // ######################################
 /// ### route ###
 var billRouter = require('./routes/bill')
 var customerRouter = require('./routes/customer')

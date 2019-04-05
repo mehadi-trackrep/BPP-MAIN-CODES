@@ -104,4 +104,53 @@ router.get('/update-bills', function (req, res) {
   res.send('obj: ' + obj)
 })
 
+
+router.get('/modify-vehicle', async function (req, res) {
+  var reg = req.query.id
+  reg = reg.replace(/[^a-zA-Z0-9]/g, '')
+  reg = reg.toString().toLowerCase()
+  const Vehicle = Parse.Object.extend('Vehicle')
+  const query1 = new Parse.Query(Vehicle)
+  const query2 = new Parse.Query(Vehicle)
+  query1.startsWith('registrationFlat', reg)
+  query2.startsWith('driverNoFlat', reg)
+
+  var query = Parse.Query.or(query1, query2)
+  query.include('company')
+
+  var data = []
+  // query.fullText('registrationFlat', reg)
+  // query.select('registration')
+  var result = await query
+    .find()
+    .then(result => {
+      console.log('i#####  ##########data#########: ' + typeof result)
+      console.log(result)
+      result.forEach(el => {
+        data.push({
+          id: el.get('registration'),
+          title: el.get('registration') + el.get('driverNoFlat'),
+          text: el.get('registration') + ',' + el.get('driverNoFlat')
+        })
+      })
+      res.send(data)
+    })
+    .catch(err => {
+      console.log(err)
+      res.send([err])
+    })
+
+  // var obj = {}
+
+  // obj.id = 'Select Vehicle'
+  // obj.title = 'Select Vehicle'
+  // obj.text = '<div> Select Vehicle </div>'
+  // data.push(obj)
+
+  // res.send(data)
+})
+
+
+
+
 module.exports = router

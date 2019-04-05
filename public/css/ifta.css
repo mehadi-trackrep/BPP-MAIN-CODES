@@ -108,10 +108,10 @@ thead th {
     /*text-align: left;*/
 }
 
-tbody {
+/* tbody {
     height: 400px; 
     overflow-y: auto;
-}
+} */
 
 thead {
     /* fallback */
